@@ -1,4 +1,5 @@
 import 'package:collegedule/Plan.dart';
+import 'package:collegedule/clubEvents.dart';
 import 'package:collegedule/flutterfire.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,7 @@ class _CategoriesState extends State<Categories> {
   int selectedIndex = 1;
 
   final pages = [
-    new Schedules(),
+    new ClubEvents(),
     new Schedules(),
     new Schedules(),
   ];

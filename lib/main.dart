@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
               print("error");
               return Text("error");
             } else if(isLoggedIn) {
-              return Schedules();
+              return Categories();
             } else {
               return LogInPage();
             }
