@@ -67,11 +67,13 @@ class _CategoriesState extends State<Categories> {
           label: "Friends")
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      // floating action bar is only needed for club events, and friends
+      floatingActionButton: selectedIndex != 1 ? FloatingActionButton(
         onPressed: () async {
           DatabaseManager.manager.getUsers().then((value) => print(value));
         },
-      ),
+        child: Icon(Icons.add),
+      ) : null,
     );
   }
 }
