@@ -12,7 +12,6 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-
   String title = "all events";
   int selectedIndex = 1;
 
@@ -30,13 +29,15 @@ class _CategoriesState extends State<Categories> {
         centerTitle: true,
         elevation: 0.0,
         actions: [
-          IconButton(icon: Icon(Icons.logout),
+          IconButton(
+              icon: Icon(Icons.logout),
               onPressed: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setBool("logged_in", false);
-            bool signedOut = await signOut();
-            if(signedOut) Navigator.pushReplacementNamed(context, "/log_in");
-          })
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool("logged_in", false);
+                bool signedOut = await signOut();
+                if (signedOut)
+                  Navigator.pushReplacementNamed(context, "/log_in");
+              })
         ],
       ),
       body: this.pages[selectedIndex],
@@ -46,7 +47,7 @@ class _CategoriesState extends State<Categories> {
         onTap: (selectedIndex) {
           setState(() {
             this.selectedIndex = selectedIndex;
-            switch(selectedIndex) {
+            switch (selectedIndex) {
               case 0:
                 this.title = "Club Events";
                 break;
@@ -59,21 +60,21 @@ class _CategoriesState extends State<Categories> {
           });
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.event),
-          label: "Club Event" ),
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled),
-          label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person),
-          label: "Friends")
+          BottomNavigationBarItem(icon: Icon(Icons.event), label: "Club Event"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Friends")
         ],
       ),
       // floating action bar is only needed for club events, and friends
-      floatingActionButton: selectedIndex != 1 ? FloatingActionButton(
-        onPressed: () async {
-          DatabaseManager.manager.getUsers().then((value) => print(value));
-        },
-        child: Icon(Icons.add),
-      ) : null,
+      floatingActionButton: selectedIndex != 1
+          ? FloatingActionButton(
+              onPressed: () async {
+                if (selectedIndex == 0)
+                  Navigator.pushNamed(context, "/club_event_entry");
+              },
+              child: Icon(Icons.add),
+            )
+          : null,
     );
   }
 }

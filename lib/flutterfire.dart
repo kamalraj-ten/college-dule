@@ -1,4 +1,5 @@
 import 'package:collegedule/CustomUser.dart';
+import 'package:collegedule/event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,6 +66,17 @@ Future<void> addUserToSharedPrefs(String email) async {
       prefs.setString("college", document["college"]);
       prefs.setString("department", document["department"]);
       prefs.setString("name", document["name"]);
+      prefs.setString("uid", document["uid"]);
     }
   });
+}
+
+Future<void> addClubEvent(ClubEvent clubEvent) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection("club_events")
+        .add(clubEvent.toMap());
+  } catch (e) {
+    print(e);
+  }
 }

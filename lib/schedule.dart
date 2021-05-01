@@ -57,7 +57,7 @@ class Schedule extends StatelessWidget {
                         )
                       ),
                       child: Text(
-                        this.clubEvent.username,
+                        "username",
                         style: TextStyle(
                           fontSize: 8,
                           color: Colors.grey,
