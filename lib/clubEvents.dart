@@ -29,8 +29,15 @@ class ClubEvents extends StatelessWidget {
 
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
+            final data = document.data()['date'].toDate();
             final dateFormat = DateFormat.yMd().add_jm();
-            final date = dateFormat.format(document.data()['date'].toDate());
+            final date = dateFormat.format(data);
+
+            if (data.toString().compareTo(DateTime.now().toString()) < 0)
+              print("dead date");
+            else
+              print("live date");
+
             return Schedule(
               date: date,
               text: document.data()['event'].toString(),

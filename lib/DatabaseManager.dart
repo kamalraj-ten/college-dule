@@ -14,7 +14,6 @@ class DatabaseManager {
     values.forEach((key, value) {
       if (value != null) {
         customUsers.add(new CustomUser(
-            username: value['username'],
             name: value['name'],
             password: value['password'],
             college: value['college'],
@@ -38,7 +37,6 @@ class DatabaseManager {
     final DatabaseReference reference = dbRef.child("public");
     try {
       await reference.push().set({
-        "username": customUser.username,
         "password": customUser.password,
         "name": customUser.name,
         "college": customUser.college,

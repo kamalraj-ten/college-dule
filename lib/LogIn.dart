@@ -70,15 +70,6 @@ class LogInPage extends StatelessWidget {
       bool canLogIn = await signIn(email, password);
       if (canLogIn) {
         prefs.setBool("logged_in", true);
-        CustomUser user = await DatabaseManager.manager.getUser(email);
-
-        // adding details in sharedpreferences
-        prefs.setString("email", user.email);
-        prefs.setString("username", user.username);
-        prefs.setString("college", user.college);
-        prefs.setString("department", user.department);
-        prefs.setString("name", user.name);
-
         Navigator.pushReplacementNamed(context, "/categories");
       }
     } catch (e) {

@@ -1,6 +1,4 @@
-import 'package:collegedule/DatabaseManager.dart';
 import 'package:flutter/material.dart';
-
 import 'CustomUser.dart';
 import 'flutterfire.dart';
 
@@ -52,16 +50,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       onSaved: (s) => _customUser.email = s,
                       decoration: InputDecoration(
                         labelText: "Email",
-                      ),
-                    ),
-                    TextFormField(
-                      onChanged: (s) {
-                        username = s;
-                      },
-                      validator: (s) => validateCustomUsername(s),
-                      onSaved: (s) => _customUser.username = s,
-                      decoration: InputDecoration(
-                        labelText: "Username",
                       ),
                     ),
                     TextFormField(
@@ -149,19 +137,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return s.isEmpty ? "Enter a name" : null;
   }
 
-  String validateCustomUsername(String s) {
-    if(s.isNotEmpty) {
-      return null;
-    } else return "Enter a CustomUsername";
-  }
-
   String validateConfirmation(String s) {
     if(s.isEmpty || password.compareTo(s) != 0) return "Didn't match or empty";
     return null;
   }
 
   String validatePassword(String s) {
-    if(s.length < 4) return "password should be greater than 4 character";
+    if(s.length < 6) return "password should be greater than 6 character";
     return null;
   }
 
@@ -173,20 +155,12 @@ class _SignUpPageState extends State<SignUpPage> {
       _customUser.department = this.department;
       _customUser.college = this.college;
       print(_customUser);
-      bool isUserCreated = await createUser();
+      bool isUserCreated = await register(this.email, this.password, _customUser);
 
       if(isUserCreated) {
-        await DatabaseManager.manager.storeUser(_customUser);
         Navigator.pop(context);
       }
-
-      List<CustomUser> customUsers = await DatabaseManager.manager.getUsers();
-      print(customUsers);
     }
-  }
-
-  Future<bool> createUser() async {
-    return await register(this.email, this.password);
   }
 
   String validateEmail(String s) {
