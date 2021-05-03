@@ -168,3 +168,16 @@ Future<List<String>> getUsersUid() async {
   }
   return usersUid;
 }
+
+Future<Map<String, String>> getUsersEmail() async {
+  Map<String, String> usersEmail = {};
+  try {
+    final ref = await FirebaseFirestore.instance.collection("users").get();
+    ref.docs.forEach((element) {
+      usersEmail[element.id] = element.data()['email'];
+    });
+  } catch (e) {
+    print(e);
+  }
+  return usersEmail;
+}

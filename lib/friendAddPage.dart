@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'flutterfire.dart';
+
 class FriendAddPage extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
+  Map<String, String> usersEmailId;
+  String emailId, uid, friendUid;
+  List<String> friendsUid;
+
+  FriendAddPage({this.usersEmailId, this.uid, this.friendsUid});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +24,8 @@ class FriendAddPage extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
+                validator: (s) => _validateEmailId(s),
+                onSaved: (s) => this.emailId = s,
                 decoration: InputDecoration(
                   labelText: "Friend's email id",
                 ),
@@ -24,7 +33,7 @@ class FriendAddPage extends StatelessWidget {
               Center(
                 child: TextButton(
                   child: Text("Add friend"),
-                  onPressed: () => onSubmit(),
+                  onPressed: () => onSubmit(context),
                 ),
               ),
             ],
@@ -34,8 +43,27 @@ class FriendAddPage extends StatelessWidget {
     );
   }
 
-  void onSubmit() {
-    // TODO : complete validation and adding friend
-    print('clicked add friend');
+  String _validateEmailId(String s) {
+    if (s.isEmpty)
+      return "Enter the email id";
+    else {
+      for (String key in this.usersEmailId.keys) {
+        if (this.usersEmailId[key].compareTo(s) == 0 &&
+            key.compareTo(uid) != 0) {
+          if (this.friendsUid.contains(key)) return "Already in friends list";
+          this.friendUid = key; // key is the uid
+          return null;
+        }
+      }
+    }
+    return "No match found";
+  }
+
+  void onSubmit(context) async {
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      await addFriend(uid, friendUid);
+      Navigator.pop(context);
+    }
   }
 }

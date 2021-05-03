@@ -1,6 +1,7 @@
 import 'package:collegedule/Plan.dart';
 import 'package:collegedule/clubEvents.dart';
 import 'package:collegedule/flutterfire.dart';
+import 'package:collegedule/friendAddPage.dart';
 import 'package:collegedule/friendsEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +15,8 @@ class _CategoriesState extends State<Categories> {
   String title = "all events";
   int selectedIndex = 1;
   String uid;
-  List<String> friendsUid, usersUid;
+  List<String> friendsUid;
+  Map<String, String> usersEmailId;
 
   final pages = [
     new ClubEvents(),
@@ -50,7 +52,14 @@ class _CategoriesState extends State<Categories> {
                     semanticLabel: "add friend",
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, "/friend_add_page");
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => FriendAddPage(
+                        usersEmailId: this.usersEmailId,
+                        uid: this.uid,
+                        friendsUid: this.friendsUid,
+                        )
+                      )
+                    );
                   })
               : Container(),
         ],
@@ -88,9 +97,9 @@ class _CategoriesState extends State<Categories> {
                   Navigator.pushNamed(context, "/club_event_entry");
                 else {
                   print("friendsUid $friendsUid");
-                  print("usersUid $usersUid");
+                  print("usersEmailId $usersEmailId");
                 }
-                // TODO: change to correct functionality later  
+                // TODO: change to correct functionality later
               },
               child: Icon(Icons.add),
             )
@@ -102,7 +111,6 @@ class _CategoriesState extends State<Categories> {
     final prefs = await SharedPreferences.getInstance();
     this.uid = prefs.getString("uid");
     this.friendsUid = await getFriendsUid(uid);
-    this.usersUid = await getUsersUid();
-    print(usersUid);
+    this.usersEmailId = await getUsersEmail();
   }
 }
