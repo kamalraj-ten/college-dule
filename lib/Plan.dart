@@ -31,9 +31,9 @@ class Plan {
 
 class Schedule extends StatelessWidget {
   final text, date, onClick;
-  String id, uid;
+  String id, uid, eventId;
 
-  Schedule({this.text, this.date, this.id, this.onClick, this.uid = ""});
+  Schedule({this.text, this.date, this.id, this.onClick, this.uid = "", this.eventId = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class Schedule extends StatelessWidget {
     if (id.compareTo(uid) == 0) {
       return TextButton(
           onPressed: () {
-            onClick(id);
+            onClick(eventId);
           },
           child: Icon(Icons.clear));
     }

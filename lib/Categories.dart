@@ -14,7 +14,7 @@ class _CategoriesState extends State<Categories> {
   String title = "all events";
   int selectedIndex = 1;
   String uid;
-  List<String> friendsUid;
+  List<String> friendsUid, usersUid;
 
   final pages = [
     new ClubEvents(),
@@ -86,9 +86,11 @@ class _CategoriesState extends State<Categories> {
               onPressed: () async {
                 if (selectedIndex == 0)
                   Navigator.pushNamed(context, "/club_event_entry");
-                else
-                  // TODO: change to correct functionality later
-                  print(friendsUid);
+                else {
+                  print("friendsUid $friendsUid");
+                  print("usersUid $usersUid");
+                }
+                // TODO: change to correct functionality later  
               },
               child: Icon(Icons.add),
             )
@@ -100,5 +102,7 @@ class _CategoriesState extends State<Categories> {
     final prefs = await SharedPreferences.getInstance();
     this.uid = prefs.getString("uid");
     this.friendsUid = await getFriendsUid(uid);
+    this.usersUid = await getUsersUid();
+    print(usersUid);
   }
 }

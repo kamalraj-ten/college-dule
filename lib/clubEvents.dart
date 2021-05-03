@@ -45,6 +45,7 @@ class ClubEvents extends StatelessWidget {
               text: document.data()['event'].toString(),
               id: document.data()['uid'].toString(),
               uid: id,
+              eventId: document.id,
               onClick: removeEvent,
             );
           }).toList(),

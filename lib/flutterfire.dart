@@ -126,6 +126,7 @@ int compareDate(DateTime date1, DateTime date2) {
 Future<void> removeEvent(String id) async {
   try {
     await FirebaseFirestore.instance.collection("club_events").doc(id).delete();
+    print('removed a event with id $id');
   } catch (e) {
     print(e);
   }
@@ -155,3 +156,15 @@ Future<void> addFriend(String uid, String friendUid) async {
   }
 }
 
+Future<List<String>> getUsersUid() async {
+  List<String> usersUid = [];
+  try {
+    final ref = await FirebaseFirestore.instance.collection("users").get();
+    ref.docs.forEach((element) {
+      usersUid.add(element.id);
+    });
+  } catch (e) {
+    print(e);
+  }
+  return usersUid;
+}
