@@ -3,6 +3,7 @@ import 'package:collegedule/DatabaseManager.dart';
 import 'package:collegedule/LogIn.dart';
 import 'package:collegedule/SignUp.dart';
 import 'package:collegedule/clubEventEntry.dart';
+import 'package:collegedule/friendAddPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         "/schedules": (context) => Schedules(),
         "/categories": (context) => Categories(),
         "/club_event_entry": (context) => ClubEventEntry(),
+        "/friend_add_page": (context) => FriendAddPage(),
       },
     );
   }

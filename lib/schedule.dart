@@ -42,7 +42,7 @@ class Schedule extends StatelessWidget {
                               color: Colors.purple,
                             )
                         ),
-                        child: Text(this.clubEvent.date , style: TextStyle(
+                        child: Text(this.clubEvent.date.toLocal().toString() , style: TextStyle(
                           fontSize: 20,
                           color: Colors.purpleAccent,
                           fontWeight: FontWeight.bold,

@@ -7,7 +7,7 @@ class Plan {
   String text, date;
   String id;
 
-  Plan({@required this.text, this.date}){
+  Plan({@required this.text, this.date}) {
     var uuid = Uuid();
     id = uuid.v1();
   }
@@ -24,17 +24,16 @@ class Plan {
     Plan(text: "wow a great ninth event", date: "14-12-2020"),
   ];
 
-
   static void removePlan(String id) {
     plans.removeWhere((element) => element.id == id);
   }
 }
 
 class Schedule extends StatelessWidget {
+  final text, date, onClick;
+  String id, uid;
 
-  final text, date, id, onClick;
-
-  Schedule({this.text, this.date, this.id, this.onClick});
+  Schedule({this.text, this.date, this.id, this.onClick, this.uid = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +44,7 @@ class Schedule extends StatelessWidget {
           border: Border.all(
             color: Colors.lightBlueAccent,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -55,37 +53,45 @@ class Schedule extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                        child: Text(
-                          this.text,
-                          style: TextStyle(fontSize: 20),
-                        )
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            border: Border.all(
-                              color: Colors.purple,
-                            )
-                        ),
-                        child: Text(this.date , style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.purpleAccent,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 4),
+                    child: Text(
+                      this.text,
+                      style: TextStyle(fontSize: 20),
+                    )),
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        border: Border.all(
+                          color: Colors.purple,
                         )),
-                  ]
-              )
-          ),
-          TextButton(onPressed: (){
-            onClick(id);
-          }, child: Icon(Icons.clear))],
+                    child: Text(
+                      this.date,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.purpleAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+              ])),
+          getRemoveBtn(),
+        ],
       ),
     );
   }
-}
 
+  Widget getRemoveBtn() {
+    print("id $id uid $uid");
+    if (id.compareTo(uid) == 0) {
+      return TextButton(
+          onPressed: () {
+            onClick(id);
+          },
+          child: Icon(Icons.clear));
+    }
+    return Container();
+  }
+}
 
 class Schedules extends StatefulWidget {
   @override
@@ -93,7 +99,6 @@ class Schedules extends StatefulWidget {
 }
 
 class _SchedulesState extends State<Schedules> {
-
   List<Plan> plans = Plan.plans;
 
   @override
@@ -101,8 +106,12 @@ class _SchedulesState extends State<Schedules> {
     return ListView.builder(
         itemCount: Plan.plans.length,
         itemBuilder: (context, index) {
-      return Schedule(text: plans[index].text, date: plans[index].date, id: plans[index].id, onClick: removePlan);
-    });
+          return Schedule(
+              text: plans[index].text,
+              date: plans[index].date,
+              id: plans[index].id,
+              onClick: removePlan);
+        });
   }
 
   void removePlan(String id) {
@@ -111,4 +120,3 @@ class _SchedulesState extends State<Schedules> {
     });
   }
 }
-

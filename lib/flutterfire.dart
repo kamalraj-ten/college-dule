@@ -10,6 +10,13 @@ Future<bool> register(
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     await createUser(userCredential.user, customUser);
+    // create a friend list
+    await FirebaseFirestore.instance
+        .collection("friends")
+        .doc(userCredential.user.uid)
+        .set({
+      "friends": [userCredential.user.uid],
+    });
     return true;
   } on FirebaseAuthException catch (e) {
     if (e.code == "weak-password") {
@@ -80,3 +87,71 @@ Future<void> addClubEvent(ClubEvent clubEvent) async {
     print(e);
   }
 }
+
+Future<void> removeOutdatedClubEvents() async {
+  try {
+    List<String> keys = [];
+    await FirebaseFirestore.instance
+        .collection("club_events")
+        .get()
+        .then((QuerySnapshot value) {
+      value.docs.forEach((DocumentSnapshot element) {
+        // remove if the date is less than today
+        if (compareDate(element.data()['date'].toDate(), DateTime.now()) < 0)
+          keys.add(element.id);
+      });
+    });
+    final refs = FirebaseFirestore.instance.collection("club_events");
+    keys.forEach((element) {
+      refs.doc(element).delete();
+    });
+  } catch (e) {
+    print(e);
+  }
+}
+
+int compareDate(DateTime date1, DateTime date2) {
+  if (date1.year < date2.year)
+    return -1;
+  else if (date1.month < date2.month)
+    return -1;
+  else if (date1.day < date1.day) return -1;
+
+  // debug
+  print("valid date");
+  return 1;
+}
+
+// function to remove event on click
+Future<void> removeEvent(String id) async {
+  try {
+    await FirebaseFirestore.instance.collection("club_events").doc(id).delete();
+  } catch (e) {
+    print(e);
+  }
+}
+
+// function to get list of friends uid
+Future<List<String>> getFriendsUid(String uid) async {
+  List<String> friendsUid = [];
+  try {
+    final ref =
+        await FirebaseFirestore.instance.collection("friends").doc(uid).get();
+    List<dynamic> list = ref.data()['friends'];
+    friendsUid = list.cast<String>();
+  } catch (e) {
+    print(e);
+  }
+  return friendsUid;
+}
+
+Future<void> addFriend(String uid, String friendUid) async {
+  try {
+    await FirebaseFirestore.instance.collection("friends").doc(uid).update({
+      "friends": FieldValue.arrayUnion([friendUid]),
+    });
+  } catch (e) {
+    print(e);
+  }
+}
+

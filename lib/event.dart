@@ -26,7 +26,7 @@ class ClubEvent {
   ClubEvent.fromMap(Map map) {
     this.event = map['event'];
     this.email = map['email'];
-    this.date = DateTime.parse(map['date'].toString());
+    this.date = map['date'].toDate();
     this.department = map['department'];
     this.college = map['college'];
     this.uid = map['uid'];

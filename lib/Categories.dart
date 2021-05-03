@@ -1,10 +1,9 @@
 import 'package:collegedule/Plan.dart';
 import 'package:collegedule/clubEvents.dart';
 import 'package:collegedule/flutterfire.dart';
+import 'package:collegedule/friendsEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'DatabaseManager.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -14,12 +13,18 @@ class Categories extends StatefulWidget {
 class _CategoriesState extends State<Categories> {
   String title = "all events";
   int selectedIndex = 1;
+  String uid;
+  List<String> friendsUid;
 
   final pages = [
     new ClubEvents(),
     new Schedules(),
     new Schedules(),
   ];
+
+  _CategoriesState() {
+    getPrefs();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,17 @@ class _CategoriesState extends State<Categories> {
                 bool signedOut = await signOut();
                 if (signedOut)
                   Navigator.pushReplacementNamed(context, "/log_in");
-              })
+              }),
+          selectedIndex == 2
+              ? IconButton(
+                  icon: Icon(
+                    Icons.person_add_rounded,
+                    semanticLabel: "add friend",
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/friend_add_page");
+                  })
+              : Container(),
         ],
       ),
       body: this.pages[selectedIndex],
@@ -71,10 +86,19 @@ class _CategoriesState extends State<Categories> {
               onPressed: () async {
                 if (selectedIndex == 0)
                   Navigator.pushNamed(context, "/club_event_entry");
+                else
+                  // TODO: change to correct functionality later
+                  print(friendsUid);
               },
               child: Icon(Icons.add),
             )
           : null,
     );
+  }
+
+  void getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    this.uid = prefs.getString("uid");
+    this.friendsUid = await getFriendsUid(uid);
   }
 }
