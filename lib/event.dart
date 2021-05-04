@@ -38,3 +38,20 @@ class ClubEvent {
     return this.toMap().toString();
   }
 }
+
+class FriendEvent {
+  String event, uid;
+  DateTime date;
+
+  FriendEvent({this.event, this.uid, this.date});
+
+  FriendEvent.fromMap(Map<String, dynamic> map) {
+    this.event = map['event'];
+    this.uid = map['uid'];
+    this.date = map['date'].toDate();
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'event': this.event, 'uid': this.uid, 'date': this.date};
+  }
+}

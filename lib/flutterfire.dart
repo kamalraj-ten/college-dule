@@ -181,3 +181,11 @@ Future<Map<String, String>> getUsersEmail() async {
   }
   return usersEmail;
 }
+
+Future<void> addFriendEvent(FriendEvent friendEvent) async {
+  try {
+    await FirebaseFirestore.instance.collection("friend_event").add(friendEvent.toMap());
+  } catch (e) {
+    print(e);
+  }
+}

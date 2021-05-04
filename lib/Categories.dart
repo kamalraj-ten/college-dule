@@ -99,7 +99,7 @@ class _CategoriesState extends State<Categories> {
                   print("friendsUid $friendsUid");
                   print("usersEmailId $usersEmailId");
                 }
-                // TODO: change to correct functionality later
+                // TODO: change to add event for friend
               },
               child: Icon(Icons.add),
             )
