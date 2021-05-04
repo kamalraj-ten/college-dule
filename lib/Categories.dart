@@ -2,6 +2,7 @@ import 'package:collegedule/Plan.dart';
 import 'package:collegedule/clubEvents.dart';
 import 'package:collegedule/flutterfire.dart';
 import 'package:collegedule/friendAddPage.dart';
+import 'package:collegedule/friendEventAddPage.dart';
 import 'package:collegedule/friendsEvents.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,14 +53,14 @@ class _CategoriesState extends State<Categories> {
                     semanticLabel: "add friend",
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => FriendAddPage(
-                        usersEmailId: this.usersEmailId,
-                        uid: this.uid,
-                        friendsUid: this.friendsUid,
-                        )
-                      )
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FriendAddPage(
+                                  usersEmailId: this.usersEmailId,
+                                  uid: this.uid,
+                                  friendsUid: this.friendsUid,
+                                )));
                   })
               : Container(),
         ],
@@ -96,10 +97,14 @@ class _CategoriesState extends State<Categories> {
                 if (selectedIndex == 0)
                   Navigator.pushNamed(context, "/club_event_entry");
                 else {
-                  print("friendsUid $friendsUid");
-                  print("usersEmailId $usersEmailId");
+                  // go to friend event add page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FriendEventAddPage(uid: uid)
+                    ),
+                  );
                 }
-                // TODO: change to add event for friend
               },
               child: Icon(Icons.add),
             )

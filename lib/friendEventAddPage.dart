@@ -34,6 +34,9 @@ class _FriendEventAddPageState extends State<FriendEventAddPage> {
                     labelText: "event subject",
                   ),
                 ),
+                Container(
+                  height: 10,
+                ),
                 OutlinedButton(
                   child: Text(
                     "Select date : ${_friendEvent.date.day}/${_friendEvent.date.month}/${_friendEvent.date.year} (click to change)",
@@ -43,7 +46,14 @@ class _FriendEventAddPageState extends State<FriendEventAddPage> {
                   ),
                   onPressed: () => _selectDate(),
                 ),
+                Container(
+                  height: 10,
+                ),
                 TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    primary: Colors.white,
+                  ),
                   child: Text("Create event"),
                   onPressed: () => onSubmit(),
                 ),
@@ -76,7 +86,11 @@ class _FriendEventAddPageState extends State<FriendEventAddPage> {
   }
 
   Future<void> onSubmit() async {
-    await addFriendEvent(_friendEvent);
-    Navigator.pop(context);
+    if (this.formKey.currentState.validate()) {
+      this.formKey.currentState.save();
+      _friendEvent.uid = uid;
+      await addFriendEvent(_friendEvent);
+      Navigator.pop(context);
+    }
   }
 }
