@@ -18,11 +18,11 @@ class _CategoriesState extends State<Categories> {
   String uid;
   List<String> friendsUid;
   Map<String, String> usersEmailId;
-
+  
   final pages = [
     new ClubEvents(),
     new Schedules(),
-    new Schedules(),
+    new FriendsEvents(),
   ];
 
   _CategoriesState() {

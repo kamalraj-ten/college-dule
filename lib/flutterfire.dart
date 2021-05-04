@@ -184,7 +184,42 @@ Future<Map<String, String>> getUsersEmail() async {
 
 Future<void> addFriendEvent(FriendEvent friendEvent) async {
   try {
-    await FirebaseFirestore.instance.collection("friend_event").add(friendEvent.toMap());
+    await FirebaseFirestore.instance
+        .collection("friend_event")
+        .add(friendEvent.toMap());
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> removeFriendEvent(String friendEventId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection("friend_event")
+        .doc(friendEventId)
+        .delete();
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> removeOutdatedFriendEvents() async {
+  try {
+    List<String> keys = [];
+    await FirebaseFirestore.instance
+        .collection("friend_event")
+        .get()
+        .then((QuerySnapshot value) {
+      value.docs.forEach((DocumentSnapshot element) {
+        // remove if the date is less than today
+        if (compareDate(element.data()['date'].toDate(), DateTime.now()) < 0)
+          keys.add(element.id);
+      });
+    });
+    final refs = FirebaseFirestore.instance.collection("friend_event");
+    keys.forEach((element) {
+      refs.doc(element).delete();
+    });
   } catch (e) {
     print(e);
   }
